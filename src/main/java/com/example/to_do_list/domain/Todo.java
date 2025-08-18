@@ -22,38 +22,40 @@ public class Todo {
     @Column(nullable = false)
     boolean completed = false;
 
-    @Column(nullable = false)
-    private LocalDate due_date;
+    @Column(name = "due_date", nullable = false)
+    private LocalDate dueDate;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Priority priority = Priority.MEDIUM;
 
-    @Column(nullable = false, updatable = false)
-    private Instant created_at = Instant.now();
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private Instant createdAt = Instant.now();
 
-    @Column(nullable = false)
-    private Instant updated_at = Instant.now();
+    @Column(name = "updated_at", nullable = false)
+    private Instant updatedAt = Instant.now();
 
+    // Lifecycle Callbacks
     @PrePersist
     void onCreate() {
         Instant now = Instant.now();
-        this.created_at = now;
-        this.updated_at = now;
+        this.createdAt = now;
+        this.updatedAt = now;
     }
 
     @PreUpdate
     void onUpdate() {
-        this.updated_at = Instant.now();
+        this.updatedAt = Instant.now();
     }
 
+    // Getters and Setters
     public Long getId() { return id; }
 
     public String getTitle() {return title;}
     public void setTitle(String title) { this.title = title; }
 
-    public LocalDate getDue_date() { return due_date; }
-    public void setDue_date(LocalDate due_date) { this.due_date = due_date; }
+    public LocalDate getDue_date() { return dueDate; }
+    public void setDue_date(LocalDate dueDate) { this.dueDate = dueDate; }
 
     public boolean isCompleted() { return completed; }
     public void setCompleted(boolean completed) { this.completed = completed; }
@@ -61,7 +63,7 @@ public class Todo {
     public Priority getPriority() { return priority; }
     public void setPriority(Priority priority) { this.priority = priority; }
 
-    public Instant getCreated_at() { return created_at; }
-    public Instant getUpdated_at() { return updated_at; }
+    public Instant getCreated_at() { return createdAt; }
+    public Instant getUpdated_at() { return updatedAt; }
 
 }

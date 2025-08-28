@@ -22,7 +22,7 @@ public class Todo {
     @Column(nullable = false)
     boolean completed = false;
 
-    @Column(name = "due_date", nullable = false)
+    @Column(name = "due_date")
     private LocalDate dueDate;
 
     @Enumerated(EnumType.STRING)

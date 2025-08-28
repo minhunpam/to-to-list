@@ -9,7 +9,7 @@ public interface TodoRepository extends JpaRepository<Todo, Long>{
     List<Todo> findByCompleted(boolean completed);
 
     // SELECT * FROM todos ORDER BY due_date ASC
-    List<Todo> findAllByOrderByDue_dateAsc();
+    List<Todo> findAllByOrderByDueDateAsc();
 
     // Later can add more interface methods for custom queries
 }

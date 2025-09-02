@@ -6,7 +6,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 
 import com.example.to_do_list.domain.Todo;
-import com.example.to_do_list.repository.TodoRepository;
+import com.example.to_do_list.service.TodoService;
+import com.example.to_do_list.service.BusinessException;
 
 
 @SpringBootApplication
@@ -17,14 +18,26 @@ public class ToDoListApplication {
     }
 
     @Bean
-    CommandLineRunner demoData(TodoRepository repo) {
+    CommandLineRunner demoData(TodoService service) {
         return args -> {
-          if (repo.count() == 0) {
-              var todo = new Todo();
-              todo.setTitle("Learn Spring Boot");
-              repo.save(todo);
+          try {
+              var bad = new Todo();
+              bad.setTitle("");
+              service.save(bad);
+          } catch (BusinessException e) {
+              System.out.println(e.getMessage());
           }
-          System.out.println("Total todos in DB: " + repo.count());
+
+          var good = new Todo();
+          good.setTitle("First todo");
+          var saved = service.save(good);
+
+          saved = service.toggleCompleted(saved.getId());
+          var all = service.findAllByOrderByDueDateAsc();
+
+          System.out.println("Total todos after seeding: " + all.size());
+            System.out.println("First todo: id=" + saved.getId() +
+                    ", completed=" + service.findById(saved.getId()).isCompleted());
         };
     }
 

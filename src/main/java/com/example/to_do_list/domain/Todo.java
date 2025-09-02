@@ -54,8 +54,8 @@ public class Todo {
     public String getTitle() {return title;}
     public void setTitle(String title) { this.title = title; }
 
-    public LocalDate getDue_date() { return dueDate; }
-    public void setDue_date(LocalDate dueDate) { this.dueDate = dueDate; }
+    public LocalDate getDueDate() { return dueDate; }
+    public void setDueDate(LocalDate dueDate) { this.dueDate = dueDate; }
 
     public boolean isCompleted() { return completed; }
     public void setCompleted(boolean completed) { this.completed = completed; }
@@ -63,7 +63,7 @@ public class Todo {
     public Priority getPriority() { return priority; }
     public void setPriority(Priority priority) { this.priority = priority; }
 
-    public Instant getCreated_at() { return createdAt; }
-    public Instant getUpdated_at() { return updatedAt; }
+    public Instant getCreatedAt() { return createdAt; }
+    public Instant getUpdatedAt() { return updatedAt; }
 
 }

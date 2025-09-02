@@ -47,3 +47,7 @@ todos:
 ### 1.4. Prove our chain (Entity -> Repository -> Hibernate -> Database) works
 - Create a simple `CommandLineRunner` bean that runs at application startup by seeding the database with a starter record -> prove the persistence setup works
 
+## 2. Build the service layer
+- In the service layer, we will implement the business logic and interact with the repository layer to perform CRUD operations on the `Todo` entity.
+- The service layer serves as middleman between the controller layer (handling HTTP requests) and the repository layer (interacting with the database).
+

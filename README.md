@@ -51,3 +51,12 @@ todos:
 - In the service layer, we will implement the business logic and interact with the repository layer to perform CRUD operations on the `Todo` entity.
 - The service layer serves as middleman between the controller layer (handling HTTP requests) and the repository layer (interacting with the database).
 
+## 3. Build the REST Controller
+- Create a REST Controller that handles HTTP requests and responses for the `Todo` entity.
+- The controller will use the service layer to perform CRUD operations and return appropriate HTTP status codes and responses.
+- Implement the following endpoints:
+    - `POST /api/todos`: Create a new todo item
+    - `GET /api/todos`: Retrieve all todo items
+    - `GET /api/todos/{id}`: Retrieve a specific todo item by ID
+    - `PUT /api/todos/{id}`: Update an existing todo item by ID
+    - `DELETE /api/todos/{id}`: Delete a specific todo item by ID

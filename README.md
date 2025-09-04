@@ -60,3 +60,9 @@ todos:
     - `GET /api/todos/{id}`: Retrieve a specific todo item by ID
     - `PUT /api/todos/{id}`: Update an existing todo item by ID
     - `DELETE /api/todos/{id}`: Delete a specific todo item by ID
+
+## 4. Create DTO
+### 4.1. Create 2 DTOs (Data Transfer Object) classes: `TodoRequest` and `TodoResponse`
+  - `TodoRequest` will be used to receive data from the client when creating or updating a todo item
+  - `TodoResponse` will be used to send data back to the client when retrieving todo items
+

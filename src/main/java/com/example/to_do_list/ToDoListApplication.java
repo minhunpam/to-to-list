@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 
 import com.example.to_do_list.domain.Todo;
 import com.example.to_do_list.service.TodoService;
-import com.example.to_do_list.service.BusinessException;
+import com.example.to_do_list.exception.BusinessException;
 
 
 @SpringBootApplication
@@ -23,14 +23,14 @@ public class ToDoListApplication {
           try {
               var bad = new Todo();
               bad.setTitle("");
-              service.save(bad);
+              service.create(bad);
           } catch (BusinessException e) {
               System.out.println(e.getMessage());
           }
 
           var good = new Todo();
           good.setTitle("First todo");
-          var saved = service.save(good);
+          var saved = service.create(good);
 
           saved = service.toggleCompleted(saved.getId());
           var all = service.findAllByOrderByDueDateAsc();
@@ -38,7 +38,7 @@ public class ToDoListApplication {
           System.out.println("Total todos after seeding: " + all.size());
             System.out.println("First todo: id=" + saved.getId() +
                     ", completed=" + service.findById(saved.getId()).isCompleted());
-        };
+        };s
     }
 
 }

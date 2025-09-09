@@ -38,7 +38,7 @@ public class ToDoListApplication {
           System.out.println("Total todos after seeding: " + all.size());
             System.out.println("First todo: id=" + saved.getId() +
                     ", completed=" + service.findById(saved.getId()).isCompleted());
-        };s
+        };
     }
 
 }

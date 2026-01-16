@@ -26,51 +26,34 @@ public class TodoController {
         this.service = service;
     }
 
-    // -------------------- CREATE --------------------
-    /**
-     * Create a new Todo item.
-     *
-     * @param todoRequest The request body containing the details of the Todo item to be created.
-     * @param uri         UriComponentsBuilder to help build the URI of the created resource.
-     *                    This parameter is automatically injected by Spring.
-     * @return ResponseEntity containing the created TodoResponse and the location header.
-     */
     @PostMapping
     public ResponseEntity<TodoResponse> create(@Valid @RequestBody TodoRequest todoRequest,
-                                               UriComponentsBuilder uri) {
+                                               UriComponentsBuilder uri)
+    {
         TodoResponse created_response = service.create(todoRequest);
 
-        // start building a URI from the base URI (e.g., http://localhost:8080)
-        // then append the path and replace {id} with the actual id of the created resource
         URI location = uri.path("/api/todos/{id}")
                 .build(created_response.id());
 
-        // Create a builder with a CREATED (201) status and location header set to the given URI
-        // then set the body to the created_response object
         return ResponseEntity.created(location).
                 body(created_response);
     }
 
-    // -------------------- READ --------------------
-    // Read all
     @GetMapping
     public List<TodoResponse> getAll() {
         return service.getAll();
     }
 
-    // Read one
     @GetMapping("/{id}")
     public TodoResponse getOne(@PathVariable Long id) {
         return service.getOne(id);
     }
 
-    // -------------------- UPDATE --------------------
     @PutMapping("/{id}/toggle")
     public TodoResponse toggleCompleted(@PathVariable Long id) {
         return service.toggleCompleted(id);
     }
 
-    // -------------------- DELETE --------------------
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {

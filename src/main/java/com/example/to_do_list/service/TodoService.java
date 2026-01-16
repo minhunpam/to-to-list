@@ -23,16 +23,6 @@ public class TodoService {
         this.repo = repo;
     }
 
-    // Create and Update
-    // -------------------- CREATE/UPDATE --------------------
-    /**
-     * Create a new Todo item based on the provided TodoRequest.
-     * Validates the inputs (title, due date, priority, completed) and throws BusinessException for invalid data.
-     *
-     * @param todoRequest The request object containing details for the new Todo item.
-     * @return A TodoResponse object representing the created Todo item.
-     * @throws BusinessException if validation fails (e.g., empty title, title too long, invalid priority).
-     */
     @Transactional
     public TodoResponse create(TodoRequest todoRequest) {
         Todo todo = new Todo();
@@ -68,13 +58,6 @@ public class TodoService {
         return toResponse(repo.save(todo));
     }
 
-    /**
-     * Convert a Todo entity to a TodoResponse DTO.
-     * Helper method to transform a Todo entity into a TodoResponse DTO.
-     *
-     * @param todo The Todo entity to convert.
-     * @return A TodoResponse DTO representing the Todo entity.
-     */
     private TodoResponse toResponse(Todo todo) {
         // Handle nullable fields
         String dueDateStr = (todo.getDueDate() != null) ? todo.getDueDate().toString() : null;
@@ -102,13 +85,6 @@ public class TodoService {
         );
     }
 
-    /**
-     * Toggle the `completed` status of a Todo item by its ID.
-     *
-     * @param id The ID of the Todo item to toggle.
-     * @return A TodoResponse object representing the updated Todo item.
-     * @throws BusinessException if the Todo item with the given ID is not found.
-     */
     @Transactional
     public TodoResponse toggleCompleted(Long id) {
         Todo todo = repo.findById(id)
@@ -120,14 +96,6 @@ public class TodoService {
         return toResponse(repo.save(todo));
     }
 
-    // -------------------- READ --------------------
-    /**
-     * Retrieve a single Todo item by its ID.
-     *
-     * @param id The ID of the Todo item to retrieve.
-     * @return A TodoResponse object representing the retrieved Todo item.
-     * @throws BusinessException if the Todo item with the given ID is not found.
-     */
     public TodoResponse getOne(Long id) {
         return toResponse(
                 repo.findById(id)
@@ -135,11 +103,6 @@ public class TodoService {
         );
     }
 
-    /**
-     * Retrieve all Todo items, sorted by due date in ascending order.
-     *
-     * @return A list of TodoResponse objects representing all Todo items.
-     */
     public List<TodoResponse> getAll() {
         return repo.findAllByOrderByDueDateAsc().
                 stream().
@@ -147,14 +110,6 @@ public class TodoService {
                 toList();
     }
 
-
-    // -------------------- DELETE ---------------------
-    /**
-     * Delete a Todo item by its ID.
-     *
-     * @param id The ID of the Todo item to delete.
-     * @throws BusinessException if the Todo item with the given ID is not found.
-     */
     @Transactional
     public void deleteById(Long id) {
         if (!repo.existsById(id)) {

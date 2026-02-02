@@ -1,0 +1,44 @@
+.container {
+    padding: 25%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    
+}
+
+.side {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.field {
+    width: 100%;
+    max-width: 400px;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+}
+
+input.invalid,
+textarea.invalid {
+    border: medium solid red;
+    box-shadow: 0 0 6px red;
+}
+
+.error {
+    color: red;
+    font-size: 12px;
+    height: 14px;
+}
+
+#doneButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+

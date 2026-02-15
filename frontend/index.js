@@ -7,16 +7,34 @@ const descriptionError = document.getElementById("descriptionError");
 
 const FIELD_CANNOT_EMPTY_NOTI = "Field cannot be empty!";
 
-doneButton.addEventListener("click", () => {
+doneButton.addEventListener("click", async () => {
     const data = {
         title: titleInput.value,
         description: descriptionInput.value,
-        createdAt: new Date().toISOString()
     };
     
     const jsonData = JSON.stringify(data, null, 2);
-    
     console.log(jsonData);
+    
+    try {
+        const response = await fetch("http://localhost:8080/todos", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: jsonData
+        });
+
+        if (!response.ok) {
+            throw new Error("failed to create todo");
+        }
+
+        console.log("Todo created successfully!");
+
+    } catch (error) {
+        console.log("Error: ", error);
+    }
+    
 });
 
 titleInput.addEventListener("blur", validateTitle);
@@ -36,6 +54,7 @@ function validateTitle() {
 
     if (value.length > 100) {
         setInvalid(titleInput, titleError, "Title field must be less than 100 characters");
+        return false;
     }
 
     setValid(titleInput, titleError);

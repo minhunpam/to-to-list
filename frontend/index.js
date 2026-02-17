@@ -72,6 +72,7 @@ function validateDescription() {
 
     if (value.length > 250) {
         setInvalid(descriptionInput, descriptionError, "Description field must be less than 250 characters");
+        return false;
     }
 
     setValid(descriptionInput, descriptionError);

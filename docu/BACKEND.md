@@ -16,12 +16,14 @@
     - More specifically:
       - When the "Done" button is clicked, a Post HTTP request is made, which triggers the corresponding function in 
         the controller
+        - Jackson converts JSON object into Java DTO (`TodoDTO`) via `@RequestBody`. During this phase validation 
       - The controller then triggers the function from the service
       - The service then triggers the built-in `save()` function of the repository inherited from `JpaRespository`
       - The created to-do will then be saved
 
 ## Data validation:
 - Use client-side validation that validates the input fields instantly on the frontend
+- Use server-side validation that validates request body on the backend (controller)
 
 ### Data validation before user clicks the button
 - If one of the fields are empty, then:
@@ -31,3 +33,4 @@
         2. "description field" is: [1, 250]
 - Data validation should be implemented in both frontend and backend, if it is only implemented in frontend, it can 
   easily be bypassed
+

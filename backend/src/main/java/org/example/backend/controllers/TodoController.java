@@ -2,15 +2,14 @@ package org.example.backend.controllers;
 
 import jakarta.validation.Valid;
 import org.example.backend.dtos.TodoDto;
-import org.example.backend.pojos.TodoResponse;
+import org.example.backend.pojos.TodoGetResponse;
+import org.example.backend.pojos.TodoPostResponse;
 import org.example.backend.services.TodoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequestMapping("/todos")
 @CrossOrigin(origins = {
@@ -26,9 +25,15 @@ public class TodoController {
         this.service = service;
     }
 
+    @GetMapping
+    public ResponseEntity<List<TodoGetResponse>> getTodos() {
+        List<TodoGetResponse> todoGetResponses = service.getTodos();
+        return ResponseEntity.status(HttpStatus.OK).body(todoGetResponses);
+    }
+
     @PostMapping
-    public ResponseEntity<TodoResponse> createTodo(@Valid @RequestBody TodoDto todoDto) {
-        TodoResponse created = service.createTodo(todoDto);
+    public ResponseEntity<TodoPostResponse> createTodo(@Valid @RequestBody TodoDto todoDto) {
+        TodoPostResponse created = service.createTodo(todoDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 

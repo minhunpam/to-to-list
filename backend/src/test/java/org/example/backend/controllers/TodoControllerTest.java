@@ -2,7 +2,7 @@ package org.example.backend.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.backend.dtos.TodoDto;
-import org.example.backend.pojos.TodoResponse;
+import org.example.backend.pojos.TodoPostResponse;
 import org.example.backend.services.TodoService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +61,7 @@ class TodoControllerTest {
     @Test
     void createTodo_returnsCreated_whenPayloadIsValid() throws Exception {
         TodoDto request = new TodoDto("Buy milk", "From the nearby store");
-        TodoResponse response = new TodoResponse("Buy milk", "From the nearby store");
+        TodoPostResponse response = new TodoPostResponse("Buy milk", "From the nearby store");
 
         when(todoService.createTodo(any(TodoDto.class))).thenReturn(response);
 

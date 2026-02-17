@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TodoResponse {
+public class TodoPostResponse {
     private String title;
     private String description;
 }

@@ -1,11 +1,7 @@
-## Create a the Docker container
+## Create a Docker container
 ```bash
-docker run --name todo-postgres \
-  -e POSTGRES_DB=todo_db \
-  -e POSTGRES_USER=todo_user \
-  -e POSTGRES_PASSWORD=todo_pass \
-  -p 5432:5432 \
-  -d postgres:16
+docker run --name todo-postgres -e POSTGRES_DB=todo_db -e POSTGRES_USER=todo_user -e POSTGRES_PASSWORD=todo_pass -p 
+5432:5432 -d postgres:16
 ```
 
 ### What each part means

@@ -34,3 +34,6 @@
 - Data validation should be implemented in both frontend and backend, if it is only implemented in frontend, it can 
   easily be bypassed
 
+## HTTP Status Codes
+- GET - 200 - OK
+- POST - 201 - CREATED

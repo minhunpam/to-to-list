@@ -1,7 +1,10 @@
 package org.example.backend.controllers;
 
 import jakarta.validation.Valid;
+import org.example.backend.ParameterValidator;
 import org.example.backend.dtos.TodoDto;
+import org.example.backend.exception.NotFoundException;
+import org.example.backend.pojos.TodoDeleteResponse;
 import org.example.backend.pojos.TodoGetResponse;
 import org.example.backend.pojos.TodoPostResponse;
 import org.example.backend.services.TodoService;
@@ -31,10 +34,37 @@ public class TodoController {
         return ResponseEntity.status(HttpStatus.OK).body(todoGetResponses);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<TodoGetResponse> getTodo(@PathVariable long id) {
+        ParameterValidator.validateID(id);
+
+        TodoGetResponse todoGetResponse = service.getTodo(id);
+        if (todoGetResponse == null) throw new NotFoundException("[FAILED] To-do List not found!");
+
+        return ResponseEntity.status(HttpStatus.OK).body(todoGetResponse);
+    }
+
     @PostMapping
     public ResponseEntity<TodoPostResponse> createTodo(@Valid @RequestBody TodoDto todoDto) {
         TodoPostResponse created = service.createTodo(todoDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<TodoDeleteResponse> deleteTodo(@PathVariable Long id) {
+        ParameterValidator.validateID(id);
+
+        TodoGetResponse todoGetResponse = service.getTodo(id);
+        if (todoGetResponse == null) throw new NotFoundException("[FAILED] To-do List not found!");
+
+        TodoDeleteResponse deleted = new TodoDeleteResponse(
+                todoGetResponse.getId(),
+                todoGetResponse.getTitle(),
+                todoGetResponse.getDescription()
+        );
+        service.deleteTodo(id);
+
+        return ResponseEntity.status(HttpStatus.OK).body(deleted);
     }
 
 }

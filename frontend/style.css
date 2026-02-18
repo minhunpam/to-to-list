@@ -57,23 +57,23 @@ textarea.invalid {
 
 .todo-list {
     width: 100%;
-    max-width: 400px;
+    max-width: 500px;
     padding: 4px;
     border: 1px solid #d4d4d4;
     border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .todo-list.empty {
-    display: flex;
     justify-content: center;  /* horizontal */
     align-items: center;      /* vertical */
 }
 
 .todo-list.not-empty{
-    display: flex;
     max-height: 352px; /* 4 cards x 80px + gaps */
     overflow-y: auto;
-    flex-direction: column;
     gap: 8px;
 }
 
@@ -86,9 +86,16 @@ textarea.invalid {
     border-radius: 8px;
     padding: 10px;
     background: #fff;
+    display: flex;
+    flex-direction: column;
 }
 
 .todo-card-title {
     margin: 0 0 6px 0;
     font-size: 16px;
+}
+
+.todo-delete-button {
+    align-self: flex-end;
+    margin-top: auto;
 }

@@ -2,6 +2,7 @@ package org.example.backend.services;
 
 import org.example.backend.dtos.TodoDto;
 import org.example.backend.entities.TodoEntity;
+import org.example.backend.pojos.TodoDeleteResponse;
 import org.example.backend.pojos.TodoGetResponse;
 import org.example.backend.pojos.TodoPostResponse;
 import org.example.backend.repositories.TodoRepository;
@@ -30,6 +31,23 @@ public class TodoService {
                                                                 todoEntity.getTitle(),
                                                                 todoEntity.getDescription()))
                 .toList();
+    }
+    
+    public TodoGetResponse getTodo(long id) {
+        TodoEntity todoEntity = repository.findById(id).orElse(null);
+        if (todoEntity != null) {
+            return new TodoGetResponse(
+                    todoEntity.getId(),
+                    todoEntity.getTitle(),
+                    todoEntity.getDescription()
+            );
+        }
+
+        return null;
+    }
+
+    public void deleteTodo(long id) {
+        repository.deleteById(id);
     }
 
 }

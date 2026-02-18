@@ -1,3 +1,12 @@
+import { 
+    setInvalid,
+    setValid, 
+} from "./helper.js"
+
+const FIELD_CANNOT_EMPTY_NOTIFICATION = "Field cannot be empty!";
+const MAX_TITLE_LENGTH = 100;
+const MAX_DESCIPTION_LENGTH = 250;
+
 const titleInput = document.getElementById("titleInput");
 const descriptionInput = document.getElementById("descriptionInput");
 const doneButton = document.getElementById("doneButton");
@@ -5,10 +14,7 @@ const todoList = document.getElementById("todoList");
 
 const titleError = document.getElementById("titleError");
 const descriptionError = document.getElementById("descriptionError");
-
-const FIELD_CANNOT_EMPTY_NOTIFICATION = "Field cannot be empty!";
-const MAX_TITLE_LENGTH = 100;
-const MAX_DESCIPTION_LENGTH = 250;
+const deleteButtons = document.getElementsByClassName("todo-delete-button");
 
 doneButton.addEventListener("click", async () => {
     const data = {
@@ -84,15 +90,32 @@ function renderTodos(todos) {
         const card = document.createElement("article");
         card.className = "todo-card";
 
-        const title = document.createElement("h3");
+        const title = document.createElement("h2");
         title.className = "todo-card-title";
         title.textContent = todo.title ?? "(untitled)";
 
+        const deleteButton = document.createElement("button");
+        deleteButton.className = "todo-delete-button";
+        deleteButton.textContent = "Delete";
+        deleteButton.dataset.id = todo.id;
+
         card.appendChild(title);
+        card.appendChild(deleteButton);
         todoList.appendChild(card);
     });
 }
 
+todoList.addEventListener("click", async (event) => {
+    const button = event.target.closest(".todo-delete-button");
+    if (!button) return;
+
+    const id = button.dataset.id;
+
+    await fetch("http://localhost:8080/todos/" + id, {
+        method: "DELETE"
+    });
+    await loadTodos();
+})
 
 function validateTitle() {
     const value = titleInput.value.trim();
@@ -128,23 +151,10 @@ function validateDescription() {
     setValid(descriptionInput, descriptionError);
 
     return true;
-
 }
 
 function updateButtonState() {
     const isValid = validateTitle() && validateDescription();
 
     doneButton.disabled = !isValid;
-}
-
-function setInvalid(inputField, errorField, errorMessage) {
-    inputField.classList.add("invalid");
-    errorField.textContent = errorMessage;
-}
-
-function setValid(inputField, errorField) {
-    if (inputField.classList.contains("invalid")) {
-        inputField.classList.remove("invalid");
-    }
-    errorField.textContent = "";
 }

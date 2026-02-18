@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class TodoGetResponse {
+public class TodoDeleteResponse {
     private long id;
     private String title;
     private String description;

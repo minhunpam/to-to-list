@@ -1,9 +1,12 @@
+body, html {
+    font-family: "Roboto", sans-serif;
+}
+
 .container {
-    padding: 25%;
+    padding: 10%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    
 }
 
 .side {
@@ -12,6 +15,10 @@
     flex-direction: column;
     align-items: center;
     gap: 16px;
+}
+
+.side h2 {
+    margin: 0;
 }
 
 .field {
@@ -23,6 +30,12 @@ input, textarea {
     width: 100%;
     padding: 10px;
     font-size: 16px;
+    max-width: 100%;
+    min-width: 100%;
+}
+
+#descriptionInput {
+    height: 200px;
 }
 
 input.invalid,
@@ -42,3 +55,40 @@ textarea.invalid {
     cursor: not-allowed;
 }
 
+.todo-list {
+    width: 100%;
+    max-width: 400px;
+    padding: 4px;
+    border: 1px solid #d4d4d4;
+    border-radius: 8px;
+}
+
+.todo-list.empty {
+    display: flex;
+    justify-content: center;  /* horizontal */
+    align-items: center;      /* vertical */
+}
+
+.todo-list.not-empty{
+    display: flex;
+    max-height: 352px; /* 4 cards x 80px + gaps */
+    overflow-y: auto;
+    flex-direction: column;
+    gap: 8px;
+}
+
+
+.todo-card {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 80px;
+    border: 1px solid #d4d4d4;
+    border-radius: 8px;
+    padding: 10px;
+    background: #fff;
+}
+
+.todo-card-title {
+    margin: 0 0 6px 0;
+    font-size: 16px;
+}

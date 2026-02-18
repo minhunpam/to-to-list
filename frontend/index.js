@@ -1,11 +1,14 @@
 const titleInput = document.getElementById("titleInput");
 const descriptionInput = document.getElementById("descriptionInput");
 const doneButton = document.getElementById("doneButton");
+const todoList = document.getElementById("todoList");
 
 const titleError = document.getElementById("titleError");
 const descriptionError = document.getElementById("descriptionError");
 
-const FIELD_CANNOT_EMPTY_NOTI = "Field cannot be empty!";
+const FIELD_CANNOT_EMPTY_NOTIFICATION = "Field cannot be empty!";
+const MAX_TITLE_LENGTH = 100;
+const MAX_DESCIPTION_LENGTH = 250;
 
 doneButton.addEventListener("click", async () => {
     const data = {
@@ -30,6 +33,7 @@ doneButton.addEventListener("click", async () => {
         }
 
         console.log("Todo created successfully!");
+        await loadTodos();
 
     } catch (error) {
         console.log("Error: ", error);
@@ -43,16 +47,62 @@ descriptionInput.addEventListener("blur", validateDescription);
 titleInput.addEventListener("input", updateButtonState);
 descriptionInput.addEventListener("input", updateButtonState);
 
+document.addEventListener("DOMContentLoaded", () => {
+    loadTodos();
+});
+
+async function loadTodos() {
+    try {
+        const response = await fetch("http://localhost:8080/todos");
+        if (!response.ok) {
+            throw new Error("failed to fetch todos");
+        }
+
+        const todos = await response.json();
+        renderTodos(todos);
+    } catch (error) {
+        console.log("Error: ", error);
+        todoList.innerHTML = "<p>Failed to load todos.</p>";
+    }
+}
+
+function renderTodos(todos) {
+    todoList.innerHTML = "";
+
+    if (!Array.isArray(todos) || todos.length === 0) {
+        todoList.classList.add("empty");
+        todoList.innerHTML = "<p>No todos yet.</p>";
+        return;
+    }
+    
+    if (todoList.classList.contains("empty")) {
+        todoList.classList.remove("empty")
+    }
+
+    todoList.classList.add("not-empty");
+    todos.reverse().forEach((todo) => {
+        const card = document.createElement("article");
+        card.className = "todo-card";
+
+        const title = document.createElement("h3");
+        title.className = "todo-card-title";
+        title.textContent = todo.title ?? "(untitled)";
+
+        card.appendChild(title);
+        todoList.appendChild(card);
+    });
+}
+
 
 function validateTitle() {
     const value = titleInput.value.trim();
 
     if (value.length == 0) {
-        setInvalid(titleInput, titleError, FIELD_CANNOT_EMPTY_NOTI);
+        setInvalid(titleInput, titleError, FIELD_CANNOT_EMPTY_NOTIFICATION);
         return false;
     }
 
-    if (value.length > 100) {
+    if (value.length > MAX_TITLE_LENGTH) {
         setInvalid(titleInput, titleError, "Title field must be less than 100 characters");
         return false;
     }
@@ -66,11 +116,11 @@ function validateDescription() {
     const value = descriptionInput.value.trim();
 
     if (value.length == 0) {
-        setInvalid(descriptionInput, descriptionError, FIELD_CANNOT_EMPTY_NOTI);
+        setInvalid(descriptionInput, descriptionError, FIELD_CANNOT_EMPTY_NOTIFICATION);
         return false;
     }
 
-    if (value.length > 250) {
+    if (value.length > MAX_DESCIPTION_LENGTH) {
         setInvalid(descriptionInput, descriptionError, "Description field must be less than 250 characters");
         return false;
     }
@@ -98,4 +148,3 @@ function setValid(inputField, errorField) {
     }
     errorField.textContent = "";
 }
-

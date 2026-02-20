@@ -2,7 +2,6 @@ package org.example.backend.services;
 
 import org.example.backend.dtos.TodoDto;
 import org.example.backend.entities.TodoEntity;
-import org.example.backend.pojos.TodoDeleteResponse;
 import org.example.backend.pojos.TodoGetResponse;
 import org.example.backend.pojos.TodoPostResponse;
 import org.example.backend.repositories.TodoRepository;

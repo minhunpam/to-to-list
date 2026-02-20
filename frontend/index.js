@@ -84,7 +84,7 @@ function renderTodos(todos) {
     if (todoList.classList.contains("empty")) {
         todoList.classList.remove("empty")
     }
-
+    
     todoList.classList.add("not-empty");
     todos.reverse().forEach((todo) => {
         const card = document.createElement("article");

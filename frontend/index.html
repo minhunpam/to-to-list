@@ -7,25 +7,30 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="style.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script type="module" src="index.js" defer></script>
     </head>
 
     <body>
-        <div class="container">
-            <div class="side">
-                <div class="field">
-                    <input type="text" id="titleInput" placeholder="What do you plan to do?">
-                    <small class="error" id="titleError"></small>
+        <div class="wrapper">
+            <header class="todo-header">
+                <h2 class="todo-title">To-do List</h2>
+            </header>
+            <div class="container">
+                <div class="side input-side">
+                    <div class="field">
+                        <input type="text" id="titleInput" placeholder="What do you plan to do?">
+                        <small class="error" id="titleError"></small>
+                    </div>
+                    <div class="field">
+                        <textarea id="descriptionInput" placeholder="Description"></textarea>
+                        <small class="error" id="descriptionError"></small>
+                    </div>
+                    <button id="doneButton" disabled>Done</button>
                 </div>
-                <div class="field">
-                    <textarea rows="4" cols="50" id="descriptionInput" placeholder="Description"></textarea>
-                    <small class="error" id="descriptionError"></small>
+                <div class="side display-side">
+                    <div id="todoList" class="todo-list" aria-live="polite"></div>
                 </div>
-                <button id="doneButton" disabled>Done!</button>
-            </div>
-            <div class="side">
-                <h2>Todo List</h2>
-                <div id="todoList" class="todo-list" aria-live="polite"></div>
             </div>
         </div>
     </body>

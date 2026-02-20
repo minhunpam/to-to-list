@@ -1,12 +1,39 @@
+* {
+    box-sizing: border-box;
+}
+
 body, html {
+    font-size: 16px;
     font-family: "Roboto", sans-serif;
 }
 
-.container {
-    padding: 10%;
+:root { 
+    --todo-card-bg: #f0f0f0; 
+    --todo-card-hover: #e0e0e0;
+    --button-border-radius: 10px;
+}
+
+.wrapper {
+    display: grid;
+    grid-template-areas: 'todo-header', 'todo-body';
+}
+
+.todo-header {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
+    grid-area: 'todo-header';
+}
+
+.todo-title {
+    font-size: 3rem;
+}
+
+.container {
+    padding: 0% 10% 10%;
+    display: grid;
+    grid-template-rows: repeat(1, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+    grid-area: 'todo-body';
 }
 
 .side {
@@ -15,27 +42,23 @@ body, html {
     flex-direction: column;
     align-items: center;
     gap: 16px;
-}
-
-.side h2 {
-    margin: 0;
+    padding: 5%;
 }
 
 .field {
     width: 100%;
-    max-width: 400px;
+    max-width: 500px;
 }
 
 input, textarea {
     width: 100%;
     padding: 10px;
     font-size: 16px;
-    max-width: 100%;
-    min-width: 100%;
 }
 
 #descriptionInput {
-    height: 200px;
+    height: 290px;
+    resize: none;
 }
 
 input.invalid,
@@ -50,7 +73,22 @@ textarea.invalid {
     height: 14px;
 }
 
+#doneButton {
+    font-size: 20px;
+    border-radius: 15px;
+    background: rgb(33, 149, 33);
+    color: white;
+    border: none;
+    padding: 7px 12px;
+    cursor:pointer;
+}
+
+#doneButton:hover {
+    background: rgb(99, 188, 130)
+}
+
 #doneButton:disabled {
+    background: green;
     opacity: 0.5;
     cursor: not-allowed;
 }
@@ -63,7 +101,6 @@ textarea.invalid {
     border-radius: 8px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
 }
 
 .todo-list.empty {
@@ -75,19 +112,23 @@ textarea.invalid {
     max-height: 352px; /* 4 cards x 80px + gaps */
     overflow-y: auto;
     gap: 8px;
+    scrollbar-gutter: stable both-edges;
 }
 
 
 .todo-card {
-    box-sizing: border-box;
     width: 100%;
     min-height: 80px;
     border: 1px solid #d4d4d4;
-    border-radius: 8px;
+    border-radius: var(--button-border-radius);
     padding: 10px;
-    background: #fff;
+    background: var(--todo-card-bg);
     display: flex;
     flex-direction: column;
+}
+
+.todo-card:hover {
+    background: var(--todo-card-hover);
 }
 
 .todo-card-title {
@@ -96,6 +137,27 @@ textarea.invalid {
 }
 
 .todo-delete-button {
+
     align-self: flex-end;
     margin-top: auto;
+    border-radius: var(--button-border-radius);
+    border: none;
+    background: red;
+    color: white;
+    padding: 3px 8px;
+}
+
+.todo-delete-button:hover {
+    background: rgb(254, 93, 93);
+}
+
+@media(max-width: 1000px) {
+    .wrapper {
+        align-content: center;
+    }
+
+    .container {
+        grid-template-rows: repeat(2, 1fr);
+        grid-template-columns: repeat(1, 1fr);
+    }
 }

@@ -11,6 +11,13 @@ body, html {
     --todo-card-bg: #f0f0f0; 
     --todo-card-hover: #e0e0e0;
     --button-border-radius: 10px;
+    --card-border-radius: 8px;
+    --delete-button-hover-color: rgb(254, 93, 93);
+}
+
+/* Make the backgroud freeze when model is open */
+body.modal-open {
+    overflow: hidden;
 }
 
 .wrapper {
@@ -98,7 +105,7 @@ textarea.invalid {
     max-width: 500px;
     padding: 4px;
     border: 1px solid #d4d4d4;
-    border-radius: 8px;
+    border-radius: var(--card-border-radius);
     display: flex;
     flex-direction: column;
 }
@@ -137,18 +144,62 @@ textarea.invalid {
 }
 
 .todo-delete-button {
-
     align-self: flex-end;
     margin-top: auto;
     border-radius: var(--button-border-radius);
     border: none;
     background: red;
     color: white;
-    padding: 3px 8px;
+    padding: 7px 14px;
+    font-size: 14px;
 }
 
 .todo-delete-button:hover {
-    background: rgb(254, 93, 93);
+    background: var(--delete-button-hover-color);
+}
+
+#delete-modal {
+    border: 1px solid #d4d4d4;
+    border-radius: var(--card-border-radius);
+}
+
+#delete-modal::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+}
+
+.modal-buttons-container {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.modal-button {
+    border: none;
+    border-radius: var(--button-border-radius);
+    padding: 7px 14px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.15s;
+}
+
+#confirm-button {
+    background: red;
+    color: white;
+}
+
+#confirm-button:hover {
+    background: var(--delete-button-hover-color);
+}
+
+#cancel-button {
+    background: #e5e5e5;
+    color: #333;
+}
+
+#cancel-button:hover {
+    background: #d6d6d6;
 }
 
 @media(max-width: 1000px) {

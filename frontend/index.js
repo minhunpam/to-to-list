@@ -14,7 +14,10 @@ const todoList = document.getElementById("todoList");
 
 const titleError = document.getElementById("titleError");
 const descriptionError = document.getElementById("descriptionError");
-const deleteButtons = document.getElementsByClassName("todo-delete-button");
+
+const modal = document.querySelector("#delete-modal");
+const confirmButton = document.querySelector("#confirm-button");
+const cancelButton = document.querySelector("#cancel-button");
 
 doneButton.addEventListener("click", async () => {
     const data = {
@@ -105,17 +108,32 @@ function renderTodos(todos) {
     });
 }
 
-todoList.addEventListener("click", async (event) => {
+let selectedTodoID = null;
+
+todoList.addEventListener("click", (event) => {
     const button = event.target.closest(".todo-delete-button");
     if (!button) return;
 
-    const id = button.dataset.id;
+    selectedTodoID = button.dataset.id;
 
-    await fetch("http://localhost:8080/todos/" + id, {
+    modal.showModal();
+    document.body.classList.add("modal-open");
+});
+
+confirmButton.addEventListener("click", async () => {
+    await fetch("http://localhost:8080/todos/" + selectedTodoID, {
         method: "DELETE"
     });
     await loadTodos();
-})
+    modal.close();
+    document.body.classList.remove("modal-open");
+});
+
+cancelButton.addEventListener("click", () => {
+   modal.close();
+   document.body.classList.remove("modal-open");
+});
+
 
 function validateTitle() {
     const value = titleInput.value.trim();

@@ -6,6 +6,7 @@ import org.example.backend.dtos.TodoDto;
 import org.example.backend.exception.NotFoundException;
 import org.example.backend.pojos.TodoDeleteResponse;
 import org.example.backend.pojos.TodoGetResponse;
+import org.example.backend.pojos.TodoPatchResponse;
 import org.example.backend.pojos.TodoPostResponse;
 import org.example.backend.services.TodoService;
 import org.springframework.http.HttpStatus;
@@ -65,6 +66,24 @@ public class TodoController {
         service.deleteTodo(id);
 
         return ResponseEntity.status(HttpStatus.OK).body(deleted);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<TodoPatchResponse> patchTodo(@PathVariable Long id, @Valid @RequestBody TodoDto todoDto) {
+        ParameterValidator.validateID(id);
+
+        TodoGetResponse todoGetResponse = service.getTodo(id);
+        if (todoGetResponse == null) throw new NotFoundException("[FAILED] To-do List not found!");
+
+        TodoPatchResponse patched = new TodoPatchResponse(
+                id,
+                todoDto.getTitle(),
+                todoDto.getDescription()
+        );
+
+        service.patchTodo(patched);
+
+        return ResponseEntity.status(HttpStatus.OK).body(patched);
     }
 
 }

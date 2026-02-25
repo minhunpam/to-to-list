@@ -3,6 +3,7 @@ package org.example.backend.services;
 import org.example.backend.dtos.TodoDto;
 import org.example.backend.entities.TodoEntity;
 import org.example.backend.pojos.TodoGetResponse;
+import org.example.backend.pojos.TodoPatchResponse;
 import org.example.backend.pojos.TodoPostResponse;
 import org.example.backend.repositories.TodoRepository;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,10 @@ public class TodoService {
     public TodoPostResponse createTodo(TodoDto todoDto) {
         TodoEntity todoEntity = new TodoEntity(todoDto);
         repository.save(todoEntity);
-        return new TodoPostResponse(todoDto.getTitle(), todoDto.getDescription());
+        return new TodoPostResponse(
+                todoDto.getTitle(),
+                todoDto.getDescription()
+        );
     }
 
     public List<TodoGetResponse> getTodos() {
@@ -47,6 +51,16 @@ public class TodoService {
 
     public void deleteTodo(long id) {
         repository.deleteById(id);
+    }
+
+    public void patchTodo(TodoPatchResponse todoPatchResponse) {
+        TodoEntity patched = new TodoEntity(
+                todoPatchResponse.getId(),
+                todoPatchResponse.getTitle(),
+                todoPatchResponse.getDescription()
+        );
+
+        repository.save(patched);
     }
 
 }

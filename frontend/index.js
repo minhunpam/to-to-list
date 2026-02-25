@@ -62,9 +62,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function loadTodos() {
     try {
-        const response = await fetch("http://localhost:8080/todos");
+        const response = await fetch("http://localhost:8080/todos", {
+            method: "GET"
+        });
         if (!response.ok) {
-            throw new Error("failed to fetch todos");
+            throw new Error("[FAILED] cannot fetch todos");
         }
 
         const todos = await response.json();
@@ -92,6 +94,7 @@ function renderTodos(todos) {
     todos.reverse().forEach((todo) => {
         const card = document.createElement("article");
         card.className = "todo-card";
+        card.dataset.id = todo.id;
 
         const title = document.createElement("h2");
         title.className = "todo-card-title";
@@ -101,6 +104,7 @@ function renderTodos(todos) {
         deleteButton.className = "todo-delete-button";
         deleteButton.textContent = "Delete";
         deleteButton.dataset.id = todo.id;
+        
 
         card.appendChild(title);
         card.appendChild(deleteButton);
@@ -109,8 +113,41 @@ function renderTodos(todos) {
 }
 
 let selectedTodoID = null;
+let originalTitle = null;
+let originalDescription = null;
 
-todoList.addEventListener("click", (event) => {
+todoList.addEventListener("click", async (event) => {
+    // Click the to-do card
+    const todoCard = event.target.closest(".todo-card");
+    if (!todoCard) return;
+
+    selectedTodoID = todoCard.dataset.id;
+
+    try {
+        const response = await fetch("http://localhost:8080/todos/" + selectedTodoID, {
+            method: "GET"
+        });
+        if (!response.ok) {
+            throw new Error("[FAILED] cannot fetch todo!");
+        }
+
+        const todo = await response.json();
+        
+        titleInput.value = todo.title ?? "";
+        descriptionInput.value = todo.description ?? "";
+        originalTitle = titleInput.value;
+        originalDescription = descriptionInput.value;
+
+    } catch (error) {
+        console.log("Error: ", error);
+        alert("Error: ", error);
+    }
+
+    doneButton.setAttribute("disable", "true");
+    validateTitle();
+    validateDescription();
+    
+    // Click delete button of a to-do
     const button = event.target.closest(".todo-delete-button");
     if (!button) return;
 
@@ -174,5 +211,19 @@ function validateDescription() {
 function updateButtonState() {
     const isValid = validateTitle() && validateDescription();
 
-    doneButton.disabled = !isValid;
+    if (originalTitle && originalDescription) {
+        if (titleInput.value.trim() !== originalTitle || descriptionInput.value.trim() !== originalDescription) {            
+            doneButton.disabled = false;
+            doneButton.textContent = "Save";
+        }
+        else {
+            doneButton.disabled = true;
+            doneButton.textContent = "Done";
+        }
+    }
+    else {
+        console.log("debug");
+        doneButton.disabled = !isValid;
+    }
+
 }

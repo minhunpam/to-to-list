@@ -23,3 +23,9 @@
          - "Are you sure to delete this to-do?"
          - Has 2 buttons (Yes | No)
 - When the modal is open, everything behind is blurred and scrollbar disappears (`overflow: hidden` - applied on the body)
+
+- When users click to a to-do card, the title and description of the clicked to-do will be written to the `titleInput` and `descriptionInput` and the `doneButton` can only be enabled when the values of `titleInput` and `descriptionInput` are modified
+   - IDEA: Each to-do card now has 2 attributes:
+      1. `data-current-title`
+      2. `data-current-description`
+   - On interaction with `titleInput` and `descriptionInput`, it would continuously compare the modified inputs with the original ones

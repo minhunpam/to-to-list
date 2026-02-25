@@ -113,6 +113,7 @@ function renderTodos(todos) {
 }
 
 let selectedTodoID = null;
+let selectedTodoCard = null;
 let originalTitle = null;
 let originalDescription = null;
 
@@ -121,6 +122,12 @@ todoList.addEventListener("click", async (event) => {
     const todoCard = event.target.closest(".todo-card");
     if (!todoCard) return;
 
+    if (selectedTodoCard && selectedTodoCard !== todoCard) {
+        selectedTodoCard.classList.remove("selected");
+    }
+
+    todoCard.classList.add("selected");
+    selectedTodoCard = todoCard;    
     selectedTodoID = todoCard.dataset.id;
 
     try {
@@ -212,7 +219,7 @@ function updateButtonState() {
     const isValid = validateTitle() && validateDescription();
 
     if (originalTitle && originalDescription) {
-        if (titleInput.value.trim() !== originalTitle || descriptionInput.value.trim() !== originalDescription) {            
+        if ((titleInput.value.trim() !== originalTitle || descriptionInput.value.trim() !== originalDescription) && isValid) {            
             doneButton.disabled = false;
             doneButton.textContent = "Save";
         }

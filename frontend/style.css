@@ -10,6 +10,7 @@ body, html {
 :root { 
     --todo-card-bg: #f0f0f0; 
     --todo-card-hover: #e0e0e0;
+    --todo-card-selected: rgb(163, 151, 151);
     --button-border-radius: 10px;
     --card-border-radius: 8px;
     --delete-button-hover-color: rgb(254, 93, 93);
@@ -136,6 +137,11 @@ textarea.invalid {
 
 .todo-card:hover {
     background: var(--todo-card-hover);
+}
+
+.todo-card.selected {
+    background: var(--todo-card-selected);
+    color: white;
 }
 
 .todo-card-title {

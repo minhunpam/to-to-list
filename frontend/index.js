@@ -8,12 +8,17 @@ const MAX_TITLE_LENGTH = 100;
 const MAX_DESCIPTION_LENGTH = 250;
 
 const titleInput = document.getElementById("titleInput");
+const titleError = document.getElementById("titleError");
+
 const descriptionInput = document.getElementById("descriptionInput");
+const descriptionError = document.getElementById("descriptionError");
+
 const doneButton = document.getElementById("doneButton");
+const newTodoButton = document.querySelector("#newTodoButton");
+
+
 const todoList = document.getElementById("todoList");
 
-const titleError = document.getElementById("titleError");
-const descriptionError = document.getElementById("descriptionError");
 
 const modal = document.querySelector("#delete-modal");
 const confirmButton = document.querySelector("#confirm-button");
@@ -32,8 +37,7 @@ doneButton.addEventListener("click", async () => {
     };
     const jsonData = JSON.stringify(data, null, 2);
     console.log(jsonData);
-
-    console.log("inputChanged " + inputChanged);
+    console.log("inputChanged: " + inputChanged);
 
     if (inputChanged) {
         try {
@@ -48,10 +52,21 @@ doneButton.addEventListener("click", async () => {
             if (!response.ok) {
                 throw new Error("[FAILED] Cannot patch todo!");
             }
+            
+            // titleInput.value = "";
+            // descriptionInput.value = "";
+            originalTitle = titleInput.value;
+            console.log("originalTitle: " + originalTitle);
 
+            originalDescription = descriptionInput.value;
+            console.log("originalDescription: " + originalDescription);
+
+            console.log(selectedTodoCard);
+
+            updateButtonState();
+            
             console.log("Todo patched successfully!");
             await loadTodos();
-
         } catch (error) {
             console.log("Error: ", error);
         }
@@ -71,6 +86,13 @@ doneButton.addEventListener("click", async () => {
             }
     
             console.log("Todo created successfully!");
+            
+            originalTitle = null;
+            originalDescription = null;
+            titleInput.value = "";
+            descriptionInput.value = "";
+            doneButton.disabled = true;
+
             await loadTodos();
     
         } catch (error) {
@@ -143,7 +165,7 @@ function renderTodos(todos) {
 }
 
 todoList.addEventListener("click", async (event) => {
-    // Click the to-do card
+    // CLICK A TO-DO CARD
     const todoCard = event.target.closest(".todo-card");
     if (!todoCard) return;
 
@@ -172,8 +194,6 @@ todoList.addEventListener("click", async (event) => {
         descriptionInput.value = todo.description ?? "";
         originalTitle = titleInput.value;
         originalDescription = descriptionInput.value;
-        console.log("original title: " + originalTitle);
-        console.log("original desc: " + originalDescription);
 
     } catch (error) {
         console.log("Error: ", error);
@@ -184,7 +204,7 @@ todoList.addEventListener("click", async (event) => {
     validateTitle();
     validateDescription();
     
-    // Click delete button of a to-do
+    // CLICK DELETE BUTTON OF A TO-DO CARD
     const button = event.target.closest(".todo-delete-button");
     if (!button) return;
 
@@ -200,6 +220,10 @@ confirmButton.addEventListener("click", async () => {
     });
     await loadTodos();
     modal.close();
+
+    titleInput.value = "";
+    descriptionInput.value = "";
+
     document.body.classList.remove("modal-open");
 });
 
@@ -265,4 +289,31 @@ function updateButtonState() {
         doneButton.disabled = !isValid;
     }
 
+}
+
+newTodoButton.addEventListener("click", clearSelection);
+
+function clearSelection() {
+    selectedTodoID = null;
+
+    if (selectedTodoCard) {
+        selectedTodoCard.classList.remove("selected");
+        selectedTodoCard = null;
+    }
+
+    titleInput.value = "";
+    descriptionInput.value = "";
+
+    setValid(titleInput, titleError);
+    setValid(descriptionInput, descriptionError);
+
+    resetMetaData();
+
+    doneButton.disabled = true;
+}
+
+function resetMetaData() {
+    originalTitle = null;
+    originalDescription = null;
+    inputChanged = false;
 }

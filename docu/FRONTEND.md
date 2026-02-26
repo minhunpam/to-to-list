@@ -2,9 +2,15 @@
 - 2 sides
 1. Left-hand side:
    - User gives inputs there
-     - When user unfocus from the fields, the data validation should be triggered immediately and around the fields it 
-         glows red and notify the rule for each fields
-   - After every input fulfill the requirements, users are able to click the "Done" to submit the to-do
+     - When user unfocus from the fields, the data validation should be triggered immediately and around the fields it glows red and notify the rule for each fields
+
+   - Buttons:
+   1. `doneButton` is enabled whne every input fulfill the requirements to submit the to-do to the database by triggering the `POST` endpoint from the backend
+      - Besides, this button can be used as a `Save` button when users select a to-do card and want to modify the contents of the to-do
+         - It will trigger the `PATCH` endpoint from the backend
+   2. `newTodoButton` is used when users want to create a new to-do
+      - When this button is clicked all input fields and meta-data are resetted to the original state --> ready for new inputs
+
 2. Right-hand side:
    - Displays list of to-dos, displaying max. 4 to-dos at a time
       - Even though there are only 4 to-dos showing up at a time from user persepective, it still loads all available to-dos --> eager loading
@@ -23,6 +29,13 @@
          - "Are you sure to delete this to-do?"
          - Has 2 buttons (Yes | No)
 - When the modal is open, everything behind is blurred and scrollbar disappears (`overflow: hidden` - applied on the body)
+- Possible scenarios:
+   - User has selected to-do with id=1 --> That to-do will be displayed in the input fields --> User deletes that to-do --> Input fields should be empty because that to-do doesn't exist anymore
+   - User has selected to-do with id=1 --> That to-do will be displayed in the input fields --> User deletes to-do with id=2
+   --> Input fields should not be emptry because to-do with id=1 still exists
+
+
+
 
 - When users click to a to-do card, the title and description of the clicked to-do will be written to the `titleInput` and `descriptionInput` and the `doneButton` can only be enabled when the values of `titleInput` and `descriptionInput` are modified
    - IDEA: Each to-do card now has 2 attributes:

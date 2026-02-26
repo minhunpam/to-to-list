@@ -81,18 +81,34 @@ textarea.invalid {
     height: 14px;
 }
 
-#doneButton {
+.buttons-container {
+    display: flex;
+    gap: 16px;
+}
+
+.input-side-button {
     font-size: 20px;
     border-radius: 15px;
-    background: rgb(33, 149, 33);
     color: white;
     border: none;
     padding: 7px 12px;
     cursor:pointer;
 }
 
+#doneButton {
+    background: rgb(33, 149, 33);
+}
+
 #doneButton:hover {
     background: rgb(99, 188, 130)
+}
+
+#newTodoButton {
+    background: rgb(69, 69, 200);
+}
+
+#newTodoButton:hover {
+    background: rgb(138, 138, 227);
 }
 
 #doneButton:disabled {
@@ -169,11 +185,11 @@ textarea.invalid {
     border-radius: var(--card-border-radius);
 }
 
-#delete-modal::backdrop {
-    background: rgba(0, 0, 0, 0.5);
+/* #delete-modal::backdrop {
+    background: rgba(0, 0, 0, 0);
     backdrop-filter: blur(7px);
     -webkit-backdrop-filter: blur(7px);
-}
+} */
 
 .modal-buttons-container {
     display: flex;

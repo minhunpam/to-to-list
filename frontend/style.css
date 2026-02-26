@@ -185,11 +185,11 @@ textarea.invalid {
     border-radius: var(--card-border-radius);
 }
 
-/* #delete-modal::backdrop {
+#delete-modal::backdrop {
     background: rgba(0, 0, 0, 0);
     backdrop-filter: blur(7px);
     -webkit-backdrop-filter: blur(7px);
-} */
+}
 
 .modal-buttons-container {
     display: flex;

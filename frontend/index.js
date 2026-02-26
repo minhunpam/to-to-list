@@ -37,7 +37,6 @@ doneButton.addEventListener("click", async () => {
     };
     const jsonData = JSON.stringify(data, null, 2);
     console.log(jsonData);
-    console.log("inputChanged: " + inputChanged);
 
     if (inputChanged) {
         try {
@@ -61,6 +60,7 @@ doneButton.addEventListener("click", async () => {
             originalDescription = descriptionInput.value;
             console.log("originalDescription: " + originalDescription);
 
+            console.log("selectedTodoID: " + selectedTodoID);
             console.log(selectedTodoCard);
 
             updateButtonState();
@@ -110,6 +110,11 @@ descriptionInput.addEventListener("input", updateButtonState);
 
 document.addEventListener("DOMContentLoaded", () => {
     loadTodos();
+
+    // console.log("selectedTodoID: " + selectedTodoID);
+    // console.log("selectedTodoCard " + selectedTodoCard);
+    // console.log("originalTitle " + originalTitle);
+    // console.log("originalDescription " + originalDescription);
 });
 
 async function loadTodos() {
@@ -148,6 +153,11 @@ function renderTodos(todos) {
         card.className = "todo-card";
         card.dataset.id = todo.id;
 
+        if (String(todo.id) === String(selectedTodoID)) {
+            card.classList.add("selected");
+            selectedTodoCard = card;
+        }
+
         const title = document.createElement("h2");
         title.className = "todo-card-title";
         title.textContent = todo.title ?? "(untitled)";
@@ -170,6 +180,7 @@ todoList.addEventListener("click", async (event) => {
     if (!todoCard) return;
 
     if (selectedTodoCard && selectedTodoCard !== todoCard) {
+        console.log("selected has been removed!");
         selectedTodoCard.classList.remove("selected");
     }
 
@@ -200,7 +211,7 @@ todoList.addEventListener("click", async (event) => {
         alert("Error: ", error);
     }
 
-    doneButton.setAttribute("disable", "true");
+    doneButton.disabled = true;
     validateTitle();
     validateDescription();
     
@@ -224,6 +235,7 @@ confirmButton.addEventListener("click", async () => {
     titleInput.value = "";
     descriptionInput.value = "";
 
+    
     document.body.classList.remove("modal-open");
 });
 

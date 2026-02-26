@@ -19,33 +19,63 @@ const modal = document.querySelector("#delete-modal");
 const confirmButton = document.querySelector("#confirm-button");
 const cancelButton = document.querySelector("#cancel-button");
 
+let selectedTodoID = null;
+let selectedTodoCard = null;
+let originalTitle = null;
+let originalDescription = null;
+let inputChanged = false;
+
 doneButton.addEventListener("click", async () => {
     const data = {
         title: titleInput.value,
         description: descriptionInput.value,
     };
-    
     const jsonData = JSON.stringify(data, null, 2);
     console.log(jsonData);
-    
-    try {
-        const response = await fetch("http://localhost:8080/todos", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: jsonData
-        });
 
-        if (!response.ok) {
-            throw new Error("failed to create todo");
+    console.log("inputChanged " + inputChanged);
+
+    if (inputChanged) {
+        try {
+            const response = await fetch("http://localhost:8080/todos/" + selectedTodoID, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: jsonData
+            });
+
+            if (!response.ok) {
+                throw new Error("[FAILED] Cannot patch todo!");
+            }
+
+            console.log("Todo patched successfully!");
+            await loadTodos();
+
+        } catch (error) {
+            console.log("Error: ", error);
         }
-
-        console.log("Todo created successfully!");
-        await loadTodos();
-
-    } catch (error) {
-        console.log("Error: ", error);
+    } 
+    else {
+        try {
+            const response = await fetch("http://localhost:8080/todos", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: jsonData
+            });
+    
+            if (!response.ok) {
+                throw new Error("[FAILED] Cannot create todo!");
+            }
+    
+            console.log("Todo created successfully!");
+            await loadTodos();
+    
+        } catch (error) {
+            console.log("Error: ", error);
+        }
     }
     
 });
@@ -112,11 +142,6 @@ function renderTodos(todos) {
     });
 }
 
-let selectedTodoID = null;
-let selectedTodoCard = null;
-let originalTitle = null;
-let originalDescription = null;
-
 todoList.addEventListener("click", async (event) => {
     // Click the to-do card
     const todoCard = event.target.closest(".todo-card");
@@ -126,9 +151,12 @@ todoList.addEventListener("click", async (event) => {
         selectedTodoCard.classList.remove("selected");
     }
 
+    
     todoCard.classList.add("selected");
     selectedTodoCard = todoCard;    
     selectedTodoID = todoCard.dataset.id;
+    
+    inputChanged = false;
 
     try {
         const response = await fetch("http://localhost:8080/todos/" + selectedTodoID, {
@@ -144,6 +172,8 @@ todoList.addEventListener("click", async (event) => {
         descriptionInput.value = todo.description ?? "";
         originalTitle = titleInput.value;
         originalDescription = descriptionInput.value;
+        console.log("original title: " + originalTitle);
+        console.log("original desc: " + originalDescription);
 
     } catch (error) {
         console.log("Error: ", error);
@@ -222,10 +252,12 @@ function updateButtonState() {
         if ((titleInput.value.trim() !== originalTitle || descriptionInput.value.trim() !== originalDescription) && isValid) {            
             doneButton.disabled = false;
             doneButton.textContent = "Save";
+            inputChanged = true;
         }
         else {
             doneButton.disabled = true;
             doneButton.textContent = "Done";
+            inputChanged = false;
         }
     }
     else {

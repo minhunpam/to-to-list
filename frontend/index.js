@@ -5,7 +5,7 @@ import {
 
 const FIELD_CANNOT_EMPTY_NOTIFICATION = "Field cannot be empty!";
 const MAX_TITLE_LENGTH = 100;
-const MAX_DESCIPTION_LENGTH = 250;
+const MAX_DESCRIPTION_LENGTH = 250;
 
 const titleInput = document.getElementById("titleInput");
 const titleError = document.getElementById("titleError");
@@ -271,7 +271,7 @@ function validateDescription() {
         return false;
     }
 
-    if (value.length > MAX_DESCIPTION_LENGTH) {
+    if (value.length > MAX_DESCRIPTION_LENGTH) {
         setInvalid(descriptionInput, descriptionError, "Description field must be less than 250 characters");
         return false;
     }
